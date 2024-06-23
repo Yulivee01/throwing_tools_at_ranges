@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <functional>
 #include <ranges>
+#include <numeric>
 
 namespace
 {
@@ -41,13 +42,7 @@ namespace
                     return 3.0 * subrng[1] - 2.0 * subrng[0];
                 });
 
-        // inner product
-        return std::ranges::fold_left(
-            std::views::zip_transform([](const auto e1, const auto e2) { return e1 * e2;  }, 
-                                      tmp1 | std::views::drop(1), 
-                                      tmp2), 
-            0.0, 
-            std::plus{});
+        return std::inner_product(std::ranges::begin(tmp1) + 1, std::ranges::end(tmp1), std::ranges::begin(tmp2), 0.0);
     }
 }
 
